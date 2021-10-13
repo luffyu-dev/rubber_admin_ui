@@ -17,8 +17,7 @@
                     mode="horizontal"
                     @select="handleSelect">
 
-                <el-menu-item index="admin-user" @click="checkNav('admin-user')">OA权限系统</el-menu-item>
-                <el-menu-item index="publish" @click="checkNav('publish')">发布系统</el-menu-item>
+                <el-menu-item v-for="item in osSystemConfig" :index="item.system_key" @click="checkNav(item.system_key)">{{item.system_name}}</el-menu-item>
 
                 <!--                <el-submenu index="2">-->
 <!--                    <template slot="title">我的工作台</template>-->
@@ -85,7 +84,8 @@ export default {
             name: 'luffyu',
             message: 2,
             activeSystemIndex: 'admin-user',
-        };
+            osSystemConfig : global.OA_SYSTEM_CONFIG
+    };
     },
     created() {
         this.activeSystemIndex = global.getSystemIndex();

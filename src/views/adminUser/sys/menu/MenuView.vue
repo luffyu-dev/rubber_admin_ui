@@ -41,65 +41,71 @@
         >展开/折叠</el-button>
       </div>
 
-      <el-table
-          :data="tableData"
-          border
-          class="table"
-          row-key="menuId"
-          ref="multipleTable"
-          header-cell-class-name="table-header"
-          @select="select"
-          @row-click="rowClick"
-          @selection-change="radioSelectionChange"
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column label="菜单名称" width="150">
-          <template slot-scope="scope">
-            <i :class="scope.row.icon"></i>
-            {{scope.row.menuName}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="seq" label="排序" width="100" align="center"></el-table-column>
-        <el-table-column prop="url" label="请求url" width="400"></el-table-column>
+      <template>
+        <el-tabs v-model="activeSystemMenu" type="card" @tab-click="handleClickSystem">
+          <el-tab-pane  v-for="item in osSystemConfig" :label="item.system_name" :name="item.system_key">
+            <el-table
+                    :data="tableData"
+                    border
+                    class="table"
+                    row-key="menuId"
+                    ref="multipleTable"
+                    header-cell-class-name="table-header"
+                    @select="select"
+                    @row-click="rowClick"
+                    @selection-change="radioSelectionChange"
+                    :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+            >
+              <el-table-column type="selection" width="55" align="center"></el-table-column>
+              <el-table-column label="菜单名称" width="150">
+                <template slot-scope="scope">
+                  <i :class="scope.row.icon"></i>
+                  {{scope.row.menuName}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="seq" label="排序" width="100" align="center"></el-table-column>
+              <el-table-column prop="url" label="请求url" width="400"></el-table-column>
 
-        <el-table-column prop="menuType" label="类型" align="center">
-          <template slot-scope="scope">
-            <el-tag :type=" scope.row.menuType == 'M' ? 'success':'danger' ">
-              <span v-if = "scope.row.menuType == 'M' " >目录</span>
-              <span v-if = "scope.row.menuType == 'C' " >菜单</span>
-              <span v-if = "scope.row.menuType == 'B' " >按钮</span>
-            </el-tag>
-          </template>
-        </el-table-column>
+              <el-table-column prop="menuType" label="类型" align="center">
+                <template slot-scope="scope">
+                  <el-tag :type=" scope.row.menuType == 'M' ? 'success':'danger' ">
+                    <span v-if = "scope.row.menuType == 'M' " >目录</span>
+                    <span v-if = "scope.row.menuType == 'C' " >菜单</span>
+                    <span v-if = "scope.row.menuType == 'B' " >按钮</span>
+                  </el-tag>
+                </template>
+              </el-table-column>
 
-        <el-table-column label="状态" align="center">
-          <template slot-scope="scope">
-            <el-tag :type=" scope.row.status == '0' ? 'success':'danger' ">
-              <span >{{ normalShowStatus(scope.row.status) }}</span>
-            </el-tag>
-          </template>
-        </el-table-column>
+              <el-table-column label="状态" align="center">
+                <template slot-scope="scope">
+                  <el-tag :type=" scope.row.status == '0' ? 'success':'danger' ">
+                    <span >{{ normalShowStatus(scope.row.status) }}</span>
+                  </el-tag>
+                </template>
+              </el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
-          <template slot-scope="scope">
+              <el-table-column label="操作" width="180" align="center">
+                <template slot-scope="scope">
 
-            <el-button
-                type="text"
-                icon="el-icon-edit"
-                class="blue"
-                @click="openEdit(scope.$index, scope.row)"
-            >编辑</el-button>
+                  <el-button
+                          type="text"
+                          icon="el-icon-edit"
+                          class="blue"
+                          @click="openEdit(scope.$index, scope.row)"
+                  >编辑</el-button>
 
-            <el-button
-                type="text"
-                icon="el-icon-delete"
-                class="red"
-                @click="handleDelete(scope.row.menuId, scope.row)"
-            >删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+                  <el-button
+                          type="text"
+                          icon="el-icon-delete"
+                          class="red"
+                          @click="handleDelete(scope.row.menuId, scope.row)"
+                  >删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+      </template>
     </div>
 
 
@@ -209,11 +215,40 @@
       ];
       data.authOptionGroup = [];
       data.selectRootMenus = [];
-      data.activeSystemMenu = "oa-admin";
+      data.osSystemConfig = global.OA_SYSTEM_CONFIG;
       return data
+    },
+    created() {
+      for (const index in this.osSystemConfig){
+        this.activeSystemMenu = this.osSystemConfig[index].system_key;
+        this.handleClickSystem();
+        return;
+      }
     },
 
     methods:{
+      handleClickSystem(){
+        this.form.systemKey = this.activeSystemMenu;
+        this.getPageList();
+      },
+
+      getPageList() {
+        request({
+          url: global.rubberBasePath + this.url.pageList + "/" + this.activeSystemMenu,
+          method: 'get',
+          params: {
+            'json':encodeURI(JSON.stringify(this.query))
+          }
+        }).then(result => {
+          this.query.selectModels = [];
+          if (global.SUCCESS === result.code){
+            this.handleAfterPageList(result);
+          }else {
+            this.handelRequestError(result);
+          }
+        })
+      },
+
       handleAfterPageList(result){
         this.tableData = result.data.children;
         const canSelectRootMenus = [];

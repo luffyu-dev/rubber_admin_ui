@@ -12,10 +12,23 @@
   //账户登陆状态异常
   const LOGIN_VERSION_ILLEGAL = '3020109';
 
+
+  const OA_SYSTEM_CONFIG = [
+      {
+          "system_key":"admin-user",
+          "system_name":"OA权限系统",
+      },
+      {
+          "system_key":"publish",
+          "system_name":"发布系统",
+      }
+  ];
+
   export default
   {
     rubberBasePath,
     SUCCESS,
+    OA_SYSTEM_CONFIG,
     checkLoginFlag,
     handelRequestError,
     getSystemIndex,
