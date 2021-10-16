@@ -13,7 +13,7 @@ module.exports = {
         //系统管理的后台自定义配置
         proxy: {
             '/oa-api/sys':{
-                target:'http://127.0.0.1:8081',
+                target:'http://127.0.0.1:38002',
                 changeOrigin:true
             },
             '/oa-api/publish':{
@@ -21,7 +21,7 @@ module.exports = {
                 changeOrigin:true
             },
             '/oa-api':{
-                target:'http://127.0.0.1:8081',
+                target:'http://127.0.0.1:38002',
                 changeOrigin:true
                 // pathRewrite:{
                 //     '/api':'/api'
