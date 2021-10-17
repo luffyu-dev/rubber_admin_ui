@@ -25,6 +25,21 @@ const allUrl = {
     info:"/publish/server-device/info/%s",
     checkStatus:"/publish/server-device/test-status/%s"
   },
+  packConfig:{
+    pageList:"/publish/pack-config/list",
+    add:"/publish/pack-config/add",
+    edit:"/publish/pack-config/update/%s",
+    del:"/publish/pack-config/del/%s",
+    info:"/publish/pack-config/info/%s",
+  },
+
+  packOrder:{
+    pageList:"/publish/pack-order/list",
+    add:"/publish/pack-order/add",
+    edit:"/publish/pack-order/update/%s",
+    del:"/publish/pack-order/del/%s",
+    info:"/publish/pack-order/info/%s",
+  },
 };
 
 

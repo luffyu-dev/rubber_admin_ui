@@ -109,7 +109,22 @@ export default new Router({
                     path: 'server-device',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../views/publish/serverDevice/index.vue'),
                     meta: { title: '服务器设备' }
-                }
+                },
+                {
+                    path: 'pack-config',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../views/publish/packConfig/index.vue'),
+                    meta: { title: 'Jar包配置' }
+                },
+                {
+                    path: 'pack-order',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../views/publish/packOrder/index.vue'),
+                    meta: { title: '打包管理' }
+                },
+                {
+                    path: 'pack-order/info',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../views/publish/packOrder/component/packOrderInfo.vue'),
+                    meta: { title: '打包管理' }
+                },
             ]
         },
         {
