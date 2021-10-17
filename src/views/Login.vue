@@ -105,7 +105,7 @@
     .login-wrap {
         width: 100%;
         height: 50vh;
-        background-image: url(../assets/img/login-bg-3.jpg);
+        background-image: url(../assets/img/login-bg-4.jpg);
         background-size: 100%;
     }
 
@@ -136,13 +136,12 @@
     }
 
     .login-form-wrap{
-        width: 20%;
-        margin-left: 40%;
-        min-width: 350px;
+        width: 100%;
         text-align: center;
         height: 45vh;
     }
     .ms-login {
+        display: inline-block;
         width: 350px;
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.3);
