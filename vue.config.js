@@ -7,13 +7,13 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
         host: "127.0.0.1",
-        port: 8080,
+        port: 48080,
         https: false,
 
         //系统管理的后台自定义配置
         proxy: {
             '/oa-api/sys':{
-                target:'http://127.0.0.1:38002',
+                target:'http://127.0.0.1:38001',
                 changeOrigin:true
             },
             '/oa-api/publish':{
@@ -21,11 +21,8 @@ module.exports = {
                 changeOrigin:true
             },
             '/oa-api':{
-                target:'http://127.0.0.1:38002',
+                target:'http://127.0.0.1:38001',
                 changeOrigin:true
-                // pathRewrite:{
-                //     '/api':'/api'
-                // }
             }
         }
     }

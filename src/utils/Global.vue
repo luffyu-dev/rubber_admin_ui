@@ -21,6 +21,10 @@
       {
           "system_key":"publish",
           "system_name":"发布系统",
+      },
+      {
+          "system_key":"framework-center",
+          "system_name":"架构中心",
       }
   ];
 

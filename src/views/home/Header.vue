@@ -232,5 +232,6 @@ export default {
 .el-menu-item,.el-submenu,.el-submenu.template{
     min-width: 150px;
     text-align: center;
+    font-size: 16px !important;
 }
 </style>

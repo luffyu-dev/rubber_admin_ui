@@ -58,7 +58,6 @@ import bus from '../../api/home/bus';
 import { getUserInfoAndMenus } from '@/api/home/home';
 import global from '@/utils/Global';
 import {setUserInfo} from '@/utils/auth';
-import {getSystemIndex} from "../../utils/Global";
 
 let index = 0;
 export default {
@@ -137,5 +136,8 @@ export default {
 }
 .sidebar > ul {
     height: 100%;
+}
+.el-submenu .el-menu-item {
+    background-color: #242f42 !important;
 }
 </style>

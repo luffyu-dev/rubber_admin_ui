@@ -128,6 +128,18 @@ export default new Router({
             ]
         },
         {
+            path: '/framework-center',
+            component: () => import(/* webpackChunkName: "home" */ '../views/framework/Home.vue'),
+            meta: { title: '发布中心' },
+            children: [
+                {
+                    path: '',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/framework/index.vue'),
+                    meta: { title: '发布中心' }
+                },
+            ]
+        },
+        {
             path: '/login',
             component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
             meta: { title: '登录' }

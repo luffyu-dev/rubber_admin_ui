@@ -56,6 +56,11 @@ a {
 .container-head {
     padding: 5px 0;
 }
+.publish-container-head {
+    padding: 5px 0;
+    width: 100%;
+    text-align: right;
+}
 
 .handle-input {
     width: 200px !important;
@@ -73,6 +78,7 @@ a {
 .table {
     width: 100%;
     font-size: 14px;
+    margin-top: 5px;
 }
 .red {
     color: #ff0000;
@@ -108,10 +114,10 @@ a {
     font-size: 13px !important;
 }
 .el-menu-item{
-    font-size: 15px !important;
+    font-size: 14px !important;
 }
 .el-submenu__title{
-    font-size: 15px !important;
+    font-size: 14px !important;
 }
 .el-table td {
     font-size: 13px !important;
@@ -258,5 +264,10 @@ a {
 
 }
 
+.dialog-form{
+    width: 80%;
+    margin-left: 10%;
+
+}
 
 

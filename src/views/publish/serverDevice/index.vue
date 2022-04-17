@@ -9,8 +9,13 @@
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
         </el-form>
+
         <div class="container">
-            <div class="container-head ">
+            <el-tabs v-model="query.searchData.serverType" @tab-click="handleSearch" type="card" style="display: inline-block;width: 80%;float: left">
+                <el-tab-pane label="应用服务器" name="app"></el-tab-pane>
+                <el-tab-pane label="打包服务器" name="jenkins"></el-tab-pane>
+            </el-tabs>
+            <div class="publish-container-head" style="display: inline-block;width: 20%;float: right">
                 <el-button
                         type="primary"
                         icon="el-icon-lx-add"
@@ -30,10 +35,10 @@
                     :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
                 <el-table-column prop="serverKey" width="150" label="机器Key" />
                 <el-table-column prop="serverName" width="150" label="机器名称" />
-                <el-table-column prop="serverType" width="100" label="机器类型" />
+                <el-table-column prop="serverGroupKey"  width="80" label="所属组" />
                 <el-table-column prop="serverIp"  width="100" label="机器IP" />
-                <el-table-column prop="serverShPort"  width="80" label="sh端口" />
-                <el-table-column   width="150" label="sh用户" >
+                <el-table-column prop="serverShPort"  width="80" label="sh端口" v-if="query.searchData.serverType === 'app'"/>
+                <el-table-column   width="150" label="sh用户" v-if="query.searchData.serverType === 'app'">
                     <template slot-scope="scope">
                         {{scope.row.serverShUser}} / {{scope.row.serverShPsd}}
                     </template>
@@ -48,7 +53,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="serverUrl"  label="应用地址" >
+                <el-table-column prop="serverUrl"  label="应用地址" v-if="query.searchData.serverType === 'jenkins'">
                     <template slot-scope="scope">
                         <el-link type="primary" :href="scope.row.serverUrl" target="_blank"> {{scope.row.serverUrl}}</el-link>
                         <div v-if="scope.row.serverUser != undefined && scope.row.serverUser != ''">
@@ -85,8 +90,8 @@
             </div>
 
         </div>
-        <el-dialog :title="addEditTitle" :visible.sync="addEditVisible" :before-close='closeAddEdit' width="60%">
-            <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+        <el-dialog :title="addEditTitle" :visible.sync="addEditVisible" :before-close='closeAddEdit' width="1100px">
+            <el-form ref="form" :model="form" :rules="[{required: true}]" label-width="130px" class="dialog-form">
                 <el-row>
                     <el-col :span="10">
                         <el-form-item label="机器key" >
@@ -114,44 +119,44 @@
 
                 <el-row>
                     <el-col :span="10">
-                        <el-form-item label="机器ip">
+                        <el-form-item label="机器IP">
                             <el-input v-model="form.serverIp"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="10">
+                </el-row>
+                <el-row v-if="form.serverType === 'app' ">
+                    <el-col :span="8">
                         <el-form-item label="sh端口">
                             <el-input v-model="form.serverShPort" type="number"></el-input>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="10">
+                    <el-col :span="8">
                         <el-form-item label="sh用户">
                             <el-input v-model="form.serverShUser"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="10">
+                    <el-col :span="8">
                         <el-form-item label="sh密码">
                             <el-input v-model="form.serverShPsd" show-password></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row v-if="form.serverType === 'jenkins' ">
                     <el-col :span="20">
-                        <el-form-item label="应用url">
+                        <el-form-item label="Jenkins的地址">
                             <el-input v-model="form.serverUrl"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
-                <el-row>
+                <el-row v-if="form.serverType === 'jenkins' ">
                     <el-col :span="10">
-                        <el-form-item label="应用名称">
+                        <el-form-item label="Jenkins的ApiUser">
                             <el-input v-model="form.serverUser"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="10">
-                        <el-form-item label="应用token">
+                        <el-form-item label="Jenkins的ApiToken">
                             <el-input v-model="form.serverToken"></el-input>
                         </el-form-item>
                     </el-col>
@@ -182,6 +187,9 @@ export default {
             10:"正常",
             20:"停用",
             30:"负载"
+        },
+        data.query.searchData = {
+            serverType:"app"
         }
         return data
     },
