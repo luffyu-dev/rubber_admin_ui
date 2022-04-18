@@ -34,7 +34,9 @@
                 <el-table-column prop="jenkinsServerKey" width="150" label="打包机器" />
                 <el-table-column prop="taskStatus" width="150" label="打包状态" >
                     <template slot-scope="scope">
-                        <el-tag :type="[0,13,22].includes(scope.row.taskStatus) ? 'danger': (scope.row.taskStatus >= 14 ? 'success':'info')">{{status_desc[scope.row.taskStatus]}}</el-tag>
+                        <el-tag :type="[0,13,22].includes(scope.row.taskStatus) ? 'danger': (scope.row.taskStatus >= 14 ? 'success':'info')">
+                            {{scope.row.taskStatus >= 14 ? '打包成功' : status_desc[scope.row.taskStatus]}}
+                        </el-tag>
                     </template>
                 </el-table-column>
 
@@ -44,6 +46,7 @@
                         <el-button
                                 icon="el-icon-edit"
                                 type="warning"
+                                :disabled="scope.row.taskStatus === 0 || scope.row.taskStatus >= 14"
                                 @click="openEdit(scope.$index, scope.row)"
                         >编辑</el-button>
 

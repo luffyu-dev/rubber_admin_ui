@@ -52,7 +52,8 @@ service.interceptors.response.use(
         }
     },
     error => {
-        console.log(error);
+        console.log(error)
+        this.$message.error(error);
         return Promise.reject();
     }
 );

@@ -2,36 +2,72 @@
     <div>
         <div class="container">
             <el-divider content-position="left">基础信息</el-divider>
-            <div class="app-info-text">
-                <el-form :model="publishTaskInfo" :label-position = "labelPosition" label-width="120px" size="medium">
-                    <el-form-item label="包名称:">
-                        <span>{{publishTaskInfo.packName}}</span>
-                    </el-form-item>
+            <div class="app-info-text" style="max-width: 1000px">
+                <el-form :model="publishTaskInfo" :label-position = "labelPosition" label-width="120px" size="medium" >
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="jar包名称">
+                                <span>{{publishTaskInfo.jarName}}</span>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="分支Tag">
+                                <span>{{publishTaskInfo.appPackTag}}</span>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
 
-                    <el-form-item label="打包tag:">
-                        <span>{{publishTaskInfo.appPackTag}}</span>
-                    </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-col :span="12">
+                                <el-form-item label="artifactId">
+                                    <span>{{publishTaskInfo.packName}}</span>
+                                </el-form-item>
+                            </el-col>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="version">
+                                <span>{{publishTaskInfo.jarVersion}}</span>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
 
-                    <el-form-item label="jar包名称:">
-                        <span>{{publishTaskInfo.jarName}}</span>
-                    </el-form-item>
+                    <el-row v-if="publishTaskInfo.jobParamsJSON">
+                            <el-form-item label="子模块">
+                                <el-table :data="publishTaskInfo.jobParamsJSON.modules">
+                                    <el-table-column label="artifactId">
+                                        <template slot-scope="scope">
+                                            {{scope.row}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="version">
+                                        <template slot-scope="scope">
+                                            {{publishTaskInfo.jarVersion}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="状态">
+                                        <template slot-scope="scope">
+                                            <el-tag :type="publishTaskInfo.taskStatus >= 14 ? 'success': publishTaskInfo.taskStatus === 13 ? 'danger':''">
+                                                {{publishTaskInfo.taskStatus >= 14 ? '打包成功' : pack_status_desc[publishTaskInfo.taskStatus]}}
+                                            </el-tag>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-form-item>
+                    </el-row>
 
-                    <el-form-item label="jar包版本:">
-                        <span>{{publishTaskInfo.jarVersion}}</span>
-                    </el-form-item>
 
                     <el-form-item label="">
-                        <el-button v-if="publishTaskInfo.taskStatus <= 10" icon="el-icon-s-cooperation" :disabled="publishTaskInfo.taskStatus === 0"  type="warning" @click="startPack">待打包</el-button>
+                        <el-button v-if="publishTaskInfo.taskStatus <= 10" icon="el-icon-s-cooperation" :disabled="publishTaskInfo.taskStatus === 0"  type="warning" @click="startPack">打包</el-button>
                         <el-button v-else-if="publishTaskInfo.taskStatus === 11" icon="el-icon-loading"  type="warning" disabled>开始打包</el-button>
                         <el-button v-else-if="publishTaskInfo.taskStatus === 12" icon="el-icon-loading"  type="warning" disabled>打包中</el-button>
                         <el-button v-else-if="publishTaskInfo.taskStatus === 13" icon="el-icon-s-cooperation"  type="danger" @click="reStartPack">打包失败</el-button>
-                        <el-button v-else-if="publishTaskInfo.taskStatus >= 14" icon="el-icon-s-cooperation"  type="warning" @click="reStartPack">已打包</el-button>
+                        <el-button v-else-if="publishTaskInfo.taskStatus >= 14" icon="el-icon-s-cooperation"  type="warning" @click="reStartPack">打包成功</el-button>
                         <el-button  icon="el-icon-s-order" type="primary" :disabled = "publishTaskInfo.taskStatus <= 11" @click="handleOpenLogDrawer">打包日志</el-button>
 
                     </el-form-item>
                 </el-form>
             </div>
-
         </div>
 
         <el-drawer
@@ -68,6 +104,13 @@
                 intervalPublishList:null,
                 logDrawer: false,
                 parkLogContent:"",
+                pack_status_desc:{
+                    10:"待打包",
+                    11:"开始打包",
+                    12:"打包中",
+                    13:"打包失败",
+                    14:"打包成功"
+                }
             }
         },
         created() {
@@ -105,13 +148,15 @@
                     if (global.SUCCESS === result.code){
                         this.$notify({
                             title: '开始打包',
-                            message: '应用'+this.publishTaskInfo.appName+'已经开始打包',
+                            message: '应用已经开始打包',
                             type: 'success'
                         });
                         this.queryPackStatusRefresh();
                     }else {
                         this.$message.error(result.msg);
                     }
+                }).catch( error => {
+                    this.$message.error(error);
                 })
             },
             queryPackStatusRefresh(){
@@ -156,6 +201,12 @@
                     console.info(result);
                     if (global.SUCCESS === result.code){
                         this.publishTaskInfo = result.data;
+                        if (this.publishTaskInfo.jobParams && this.publishTaskInfo.jobParams.startsWith("{")){
+                            this.publishTaskInfo['jobParamsJSON'] = JSON.parse(this.publishTaskInfo.jobParams);
+                        }
+                        if (this.publishTaskInfo.taskStatus > 10 && this.publishTaskInfo.taskStatus < 13){
+                            this.queryPackStatusRefresh();
+                        }
                     }else {
                         this.$message.error(result.msg);
                     }
