@@ -13,15 +13,15 @@ module.exports = {
         //系统管理的后台自定义配置
         proxy: {
             '/oa-api/sys':{
-                target:'http://127.0.0.1:38001',
+                target:'http://192.168.1.5:38002',
                 changeOrigin:true
             },
             '/oa-api/publish':{
-                target:'http://127.0.0.1:38002',
+                target:'http://192.168.1.5:38002',
                 changeOrigin:true
             },
             '/oa-api':{
-                target:'http://127.0.0.1:38001',
+                target:'http://192.168.1.5:38002',
                 changeOrigin:true
             }
         }

@@ -58,8 +58,8 @@
             return {
                 titleConfig:{
                     logo:"LUFFYU.CN",
-                    title:"前进.梅里号系统",
-                    subtitle:"OA.发布的管理平台",
+                    title:"前进.梅利号系统",
+                    subtitle:"OA.发布.管理",
                 },
                 user: {
                     account: '',
