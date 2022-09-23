@@ -41,7 +41,7 @@
         </div>
 
         <div class="login-footer">
-
+            <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2021073341号</a>
         </div>
     </div>
 </template>
@@ -165,8 +165,14 @@
     }
     .login-footer{
         width: 100%;
-        background-color: #cad6dc;
+        background-color: #FFFFFF;
         margin-bottom: 1px;
         height: 5vh;
+        text-align: center;
+        color: #C0C4CC;
+        font-size: 14px;
+    }
+    .login-footer a{
+        color: #C0C4CC;
     }
 </style>
