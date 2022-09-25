@@ -25,6 +25,10 @@
       {
           "system_key":"framework-center",
           "system_name":"架构中心",
+      },
+      {
+          "system_key":"aiTennis",
+          "system_name":"AT网球",
       }
   ];
 

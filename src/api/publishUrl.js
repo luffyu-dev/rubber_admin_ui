@@ -40,6 +40,22 @@ const allUrl = {
     del:"/publish/pack-order/del/%s",
     info:"/publish/pack-order/info/%s",
   },
+
+  atpPlayer:{
+    pageList:"/at-admin/player/list",
+    add:"",
+    edit:"",
+    del:"",
+    info:"",
+  },
+
+  atpRank:{
+    pageList:"/at-admin/rank/list",
+    add:"",
+    edit:"",
+    del:"",
+    info:"",
+  },
 };
 
 

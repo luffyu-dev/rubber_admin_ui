@@ -140,6 +140,42 @@ export default new Router({
             ]
         },
         {
+            path: '/aiTennis',
+            component: () => import(/* webpackChunkName: "home" */ '../views/home/Home.vue'),
+            meta: { title: 'AT网球' },
+            children: [
+                {
+                    path: '',
+                    redirect: 'welcome'
+                },
+                {
+                    path: 'welcome',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/publish/home.vue'),
+                    meta: { title: '我的主页' }
+                },
+                {
+                    path: 'atp/player',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/AiTennis/atpPlayer/index'),
+                    meta: { title: '球员管理' }
+                },
+                {
+                    path: 'atp/rank',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/AiTennis/atpRank/index'),
+                    meta: { title: '排名管理' }
+                },
+                {
+                    path: 'court/list',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/AiTennis/court/index'),
+                    meta: { title: '球场列表' }
+                },
+                {
+                    path: 'invite/list',
+                    component: () => import(/* webpackChunkName: "welcome" */ '../views/AiTennis/invite/index'),
+                    meta: { title: '邀约管理' }
+                }
+            ]
+        },
+        {
             path: '/login',
             component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
             meta: { title: '登录' }
