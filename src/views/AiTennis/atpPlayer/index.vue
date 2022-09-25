@@ -60,7 +60,7 @@
                 <el-table-column label="生涯" min-width="250">
                     <template slot-scope="scope">
                         <el-row>
-                            总奖金:  {{scope.row.allBonus}}$
+                            总奖金:  ${{scope.row.allBonus}}
                         </el-row>
                         <el-row>
                             <el-col span="12">单打最佳排名:{{scope.row.singlesRankHeight}} </el-col>
@@ -116,32 +116,11 @@
             data.url = publishUrl.allUrl.atpPlayer;
             data.query.searchData = {
                 playerType:"atp"
-            }
+            };
             return data
         },
 
         methods:{
-            showStatus(status){
-                return global.showLinkStatusLabel(status);
-            },
-            checkStatus(index, row){
-                const checkStatus = this.url.checkStatus.replace("%s",row.serverKey);
-                request({
-                    url: global.rubberBasePath + checkStatus,
-                    method: 'post',
-                }).then(result => {
-                    if(result.code === global.SUCCESS){
-                        if (result.data == 20){
-                            this.$message.success(`连接正常`);
-                        }else {
-                            this.$message.error("连接失败");
-                        }
-                        this.getPageList();
-                    }else {
-                        this.$message.error(result);
-                    }
-                })
-            }
         }
     };
 

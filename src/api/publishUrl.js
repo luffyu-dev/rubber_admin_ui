@@ -56,6 +56,20 @@ const allUrl = {
     del:"",
     info:"",
   },
+  court:{
+    pageList:"/at-admin/court/list",
+    add:"",
+    edit:"",
+    del:"",
+    info:"",
+  },
+  invite:{
+    pageList:"/at-admin/invite/list",
+    add:"",
+    edit:"",
+    del:"",
+    info:"",
+  },
 };
 
 
